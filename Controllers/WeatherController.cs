@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Model;
+using temperature.Services;
 
 namespace Controllers;
 
@@ -8,20 +9,16 @@ namespace Controllers;
 public class WeatherController
 {
 
-    [HttpPost]
-    public void PostData(WeatherData data)
-    {
+    private readonly WeatherService _weatherService;
 
+    public WeatherController(WeatherService weatherService)
+    {
+        _weatherService = weatherService;
     }
+
+    [HttpPost]
+    public void PostData(WeatherData data) => _weatherService.Add(data);
 
     [HttpGet]
-    public IEnumerable<WeatherData> GetData()
-    {
-        return new List<WeatherData>() {
-new WeatherData{
-    Temperature = 21.0,
-    Pressure = 22.0
-}
-        };
-    }
+    public IEnumerable<WeatherData> GetData() => _weatherService.GetData();
 }
